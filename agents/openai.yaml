@@ -1,0 +1,64 @@
+name: livekit-validation
+description: |
+  LiveKit voice app validation skill. Use when building, debugging, or declaring working
+  any LiveKit voice agent, Agents UI app, or React/Next.js LiveKit project.
+
+  Enforces evidence-based validation before reporting a session, token endpoint, worker,
+  transcript, or end-to-end voice interaction as complete.
+
+  Core rule: a page loading is not proof. A rendered component is not proof.
+  A working voice session with observable evidence is proof.
+
+  Activation triggers:
+  - Project uses livekit-agents, @livekit/components-react, livekit-server-sdk, or livekit-client
+  - Task involves a token endpoint, voice session, agent worker, or room connection
+  - Task involves LIVEKIT_URL, LIVEKIT_API_KEY, or LIVEKIT_API_SECRET
+  - User reports that a voice agent "seems to work" or "looks ready"
+
+  Enforcement loop: Fail → Diagnose → Fix → Re-run → Prove
+
+  Validation layers:
+  1. Env/Config  — required env vars exist, LIVEKIT_URL format correct, model keys present
+  2. Runtime     — token endpoint returns valid JWT, worker process is running
+  3. UI          — connection state reaches Connected, agent joins room, visualizer renders
+  4. End-to-end  — user transcript captured, agent responded, voice state cycled
+
+  Banned completion phrases (without evidence):
+  - "looks good", "should be working", "the app appears ready", "it seems to connect"
+
+  Valid completion only after showing raw output:
+  - check_env.py output confirming all vars present
+  - Token endpoint returning { token: "eyJ...", url: "wss://..." }
+  - Worker log showing "USER SAID:" and "AGENT SAYING:"
+  - Voice assistant state observed to cycle
+
+version: 1.0.0
+author: visaoenhance
+license: MIT
+repo: https://github.com/visaoenhance/livekit-debug-playground
+
+instructions: |
+  Read SKILL.md from this repository before proceeding with any LiveKit debugging task.
+
+  Reference files:
+  - references/livekit-failure-patterns.md — 10 failure modes with diagnosis
+  - references/evidence-checklist.md — validation checklist per layer
+  - references/project-types.md — required vars and layer specifics by project type
+
+  Validation scripts (run in this order):
+  1. python scripts/check_env.py
+  2. python scripts/check_token_endpoint.py --url <your-token-endpoint>
+  3. python scripts/check_worker_status.py
+
+  Do not declare any LiveKit voice action complete until the relevant layer validation passes.
+  Do not ask the user whether to validate — validate automatically.
+  Show raw output before any summary.
+
+compatibility:
+  agents:
+    - cursor
+    - claude-code
+    - github-copilot
+    - openai-assistants
+  python: ">=3.9"
+  runtime: any
