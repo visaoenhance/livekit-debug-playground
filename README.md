@@ -30,6 +30,8 @@ Fail → Diagnose → Fix → Re-run → Prove
 
 ## Core Philosophy
 
+**No Evidence. Not done.**
+
 - A page loading is not proof
 - A rendered control bar is not proof
 - A visible transcript box is not proof

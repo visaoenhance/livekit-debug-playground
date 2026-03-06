@@ -95,6 +95,57 @@ If a validation passes without raw output to show, the proof is invalid.
 
 ---
 
+## Required Output Format
+
+When this skill is used, the coding agent must report in this structure:
+
+```
+### Layer Checked
+- Environment / Runtime / UI / End-to-End
+
+### Evidence
+- command run
+- raw output observed
+- pass/fail result
+
+### Diagnosis
+- what failed
+- why it failed
+
+### Fix Applied
+- exact change made
+
+### Re-run Proof
+- command re-run
+- output after fix
+
+### Final Verdict
+- passed / failed / blocked
+```
+
+**Raw output must appear before any summary.** A summary without preceding raw output is not valid evidence.
+
+If all four layers pass:
+
+```
+## LiveKit Validation — Complete
+
+Layer 1 (Env/Config):      PASS
+Layer 2 (Runtime):         PASS
+Layer 3 (UI):              PASS
+Layer 4 (End-to-end):      PASS
+
+Evidence summary:
+- check_env.py: all required vars present
+- Token endpoint: HTTP 200, valid JWT returned
+- Worker: connected and ready in logs
+- Session: user transcript captured, agent responded, state cycled
+
+✔ Voice session validated. This is not demo illusion.
+```
+
+---
+
 ## Layer 1 — Environment & Config
 
 **What to check:**
@@ -248,57 +299,6 @@ Token endpoint check:
 ✔ token begins with eyJ (valid JWT)
 ✔ url field present
 Layer 2 token check: PASS
-```
-
----
-
-## Required Output Format
-
-When this skill is used, the coding agent must report in this structure:
-
-```
-### Layer Checked
-- Environment / Runtime / UI / End-to-End
-
-### Evidence
-- command run
-- raw output observed
-- pass/fail result
-
-### Diagnosis
-- what failed
-- why it failed
-
-### Fix Applied
-- exact change made
-
-### Re-run Proof
-- command re-run
-- output after fix
-
-### Final Verdict
-- passed / failed / blocked
-```
-
-**Raw output must appear before any summary.** A summary without preceding raw output is not valid evidence.
-
-If all four layers pass:
-
-```
-## LiveKit Validation — Complete
-
-Layer 1 (Env/Config):      PASS
-Layer 2 (Runtime):         PASS
-Layer 3 (UI):              PASS
-Layer 4 (End-to-end):      PASS
-
-Evidence summary:
-- check_env.py: all required vars present
-- Token endpoint: HTTP 200, valid JWT returned
-- Worker: connected and ready in logs
-- Session: user transcript captured, agent responded, state cycled
-
-✔ Voice session validated. This is not demo illusion.
 ```
 
 ---
