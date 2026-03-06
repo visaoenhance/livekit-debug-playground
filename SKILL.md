@@ -1,17 +1,24 @@
 ---
 name: livekit-debug-playground
-description: "LiveKit voice app validation skill. Use when building, debugging, or declaring working any LiveKit voice agent, Agents UI app, or React/Next.js LiveKit project. Enforces evidence-based validation before reporting a session, token endpoint, worker, transcript, or end-to-end voice interaction as complete. Prevents demo illusion: a page loading is not proof, a rendered component is not proof, a working voice session with observable evidence is proof."
-license: MIT
-compatibility: "Compatible with Cursor, Claude Code, and GitHub Copilot agent mode. Requires Python 3.9+ for scripts. Works with LiveKit Cloud, LiveKit OSS, and any project using @livekit/components-react or livekit-agents."
-metadata:
-  author: visaoenhance
-  version: "1.0.0"
-  repo: https://github.com/visaoenhance/livekit-debug-playground
+description: evidence-based debugging skill for livekit voice apps. use when validating token flow, worker readiness, ui state, transcript updates, or end-to-end voice session behavior in livekit-based projects.
 ---
 
 > **This skill is safe for use in any project.**
 > It never runs destructive operations. It validates, diagnoses, and proves.
 > The enforcement loop is: **Fail → Diagnose → Fix → Re-run → Prove**
+
+---
+
+## Scope
+
+This skill is for coding agents working inside LiveKit-based repositories. It is optimized for:
+- local development and token endpoint debugging
+- worker and session startup validation
+- Agents UI app validation
+- transcript and voice-state proof
+- end-to-end voice session evidence
+
+This is not a general LiveKit tutorial.
 
 ---
 
@@ -235,7 +242,7 @@ The following phrases are invalid as completion signals unless immediately follo
 **Valid completion signal format:**
 ```
 Token endpoint check:
-{ token: "eyJhbGc...", url: "wss://my-project.livekit.cloud" }
+{ token: "eyJhbGc...", url: "wss://your-project.livekit.cloud" }
 ✔ HTTP 200
 ✔ token field present
 ✔ token begins with eyJ (valid JWT)
@@ -245,32 +252,38 @@ Layer 2 token check: PASS
 
 ---
 
-## Output Format for Agents Using This Skill
+## Required Output Format
 
-After running any validation:
+When this skill is used, the coding agent must report in this structure:
 
 ```
-## LiveKit Validation — [Layer Name]
+### Layer Checked
+- Environment / Runtime / UI / End-to-End
 
-### Check ran
-<exact command or method used>
+### Evidence
+- command run
+- raw output observed
+- pass/fail result
 
-### Raw output
-<unedited output — do not summarize first>
+### Diagnosis
+- what failed
+- why it failed
 
-### Result
-✔ PASS — [what was confirmed]
-  OR
-✘ FAIL — [exact failure description]
-   Diagnosis: [what the error means]
-   Fix applied: [what was changed]
-   Next: re-run check
+### Fix Applied
+- exact change made
 
-### Completion status
-[Layer N]: PASS | FAIL | BLOCKED
+### Re-run Proof
+- command re-run
+- output after fix
+
+### Final Verdict
+- passed / failed / blocked
 ```
+
+**Raw output must appear before any summary.** A summary without preceding raw output is not valid evidence.
 
 If all four layers pass:
+
 ```
 ## LiveKit Validation — Complete
 
