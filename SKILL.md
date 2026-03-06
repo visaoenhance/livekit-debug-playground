@@ -67,6 +67,7 @@ This skill activates when any of the following is true:
 - The task involves a token endpoint, voice session, agent worker, or room connection
 - The task involves `LIVEKIT_URL`, `LIVEKIT_API_KEY`, or `LIVEKIT_API_SECRET`
 - The user reports that a voice agent "seems to work" or "looks ready"
+- The user reports that the UI renders but the voice session does not behave correctly
 
 When active:
 - Add a validation step to the task plan before execution

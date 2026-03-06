@@ -6,7 +6,7 @@ Evidence-based debugging skill for LiveKit voice apps. Validates token flow, wor
 
 ## What This Is
 
-A portable Agent Skill and set of validation scripts for debugging LiveKit-based voice applications. It is used by coding agents (Cursor, GitHub Copilot, Claude Code) working inside LiveKit repositories to enforce evidence-based validation before reporting anything as complete.
+A portable Agent Skill plus validation scripts for debugging LiveKit-based voice applications. It is used by coding agents such as Cursor, GitHub Copilot, and Claude Code working inside LiveKit repositories to enforce evidence-based validation before reporting anything as complete.
 
 This is not a general LiveKit tutorial. It is a debugging discipline.
 
@@ -45,10 +45,10 @@ Done means the pass condition was confirmed — not that the code was written.
 
 | Layer | What it checks |
 |---|---|
-| 1 — Env/Config | Required env vars present, `LIVEKIT_URL` format correct, model provider keys set |
-| 2 — Runtime | Token endpoint returns valid JWT, worker process running and connected |
-| 3 — UI | Connection state reaches `Connected`, agent joins room, visualizer renders |
-| 4 — End-to-end | User transcript captured, agent responded, voice state cycled |
+| 1 — Env/Config | Required env vars exist, `LIVEKIT_URL` format is valid, model provider keys are present |
+| 2 — Runtime | Token endpoint returns a valid JWT, worker process is running and connected |
+| 3 — UI | Session reaches `Connected`, agent joins the room, transcript updates, visualizer state changes |
+| 4 — End-to-End | User turn captured, agent responds, voice state cycles, expected workflow output appears |
 
 ---
 
@@ -77,7 +77,9 @@ See [references/livekit-failure-patterns.md](references/livekit-failure-patterns
 npx skills add visaoenhance/livekit-debug-playground
 ```
 
-This installs the skill instructions only. Drop `SKILL.md` into your project's agent context file:
+This installs the skill instructions.
+
+Then load `SKILL.md` into your coding agent's project context file:
 
 | Agent | Context file |
 |---|---|
