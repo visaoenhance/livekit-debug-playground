@@ -1,6 +1,39 @@
 # livekit-debug-playground
 
-Evidence-based debugging skill for LiveKit voice apps. Validates token flow, worker readiness, UI state, transcript activity, and end-to-end voice session proof before declaring an app working.
+Evidence-based debugging skill for LiveKit voice apps.
+
+### The Problem
+
+LiveKit voice applications often appear to work even when no real voice session has occurred.
+
+Developers and coding agents frequently report success based on UI appearance rather than actual runtime behavior.
+
+### The Solution
+
+This repo provides:
+
+• An Agent Skill for coding assistants (Cursor, Copilot, Claude Code)  
+• Deterministic validation scripts for environment, token endpoints, and workers  
+• A structured debugging discipline for proving real voice sessions occurred
+
+The rule enforced by this repo:
+
+> **If there is no observable runtime evidence, the voice app is not working.**
+
+---
+
+## When You Should Use This
+
+Use this repo if:
+
+• Your LiveKit UI loads but voice interaction never starts  
+• The transcript UI renders but no messages appear  
+• The agent joins the room but never responds  
+• The visualizer never changes state  
+• Coding agents claim the system works but you have no proof  
+• You want deterministic validation of a LiveKit voice pipeline
+
+This tool forces the system to prove that a real voice interaction occurred.
 
 ---
 
@@ -186,6 +219,24 @@ livekit-debug-playground/
 - [supabase-debug-playground](https://github.com/visaoenhance/supabase-debug-playground) — the Supabase equivalent of this skill
 - [food-court-voice-concierge](https://github.com/visaoenhance/food-court-voice-concierge) — reference project (Type A + D)
 - [realtime-voice-avatar-agent](https://github.com/visaoenhance/realtime-voice-avatar-agent) — reference project (Type A + E)
+
+---
+
+## Mentioned in the LiveKit Community
+
+This debugging playground was referenced in a LiveKit community discussion about Agent SDK state transitions (agent vs user speaking/listening).
+
+**Discussion:** [Agent SDK states](https://community.livekit.io/t/agent-sdk-states/563)
+
+The tool helps developers observe and validate runtime state transitions including:
+
+- `agent_state_changed`
+- `user_state_changed`
+- transcript updates
+- connection lifecycle
+- end-to-end voice interaction flow
+
+This provides real-world validation that the evidence-based debugging approach solves developer questions in the LiveKit ecosystem.
 
 ---
 
