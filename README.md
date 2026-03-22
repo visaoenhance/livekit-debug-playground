@@ -97,6 +97,7 @@ Done means the pass condition was confirmed — not that the code was written.
 8. Multiple agents joining the same room
 9. Supabase dependency failure blocking worker startup
 10. Avatar layer fails silently after main session appears working
+11. Agent stops on backchanneling ("uh-huh", "okay") — unnatural conversation flow
 
 See [references/livekit-failure-patterns.md](references/livekit-failure-patterns.md) for diagnosis and fix instructions for each.
 
@@ -200,9 +201,10 @@ livekit-debug-playground/
 ├── agents/
 │   └── openai.yaml                    ← OpenAI Agents SDK skill manifest
 ├── references/
-│   ├── livekit-failure-patterns.md    ← 10 failure modes with diagnosis and fix
+│   ├── livekit-failure-patterns.md    ← 11 failure modes with diagnosis and fix
 │   ├── evidence-checklist.md          ← layer-by-layer validation checklist
-│   └── project-types.md              ← required vars and layer specifics by project type
+│   ├── project-types.md              ← required vars and layer specifics by project type
+│   └── adaptive-interruption-handling.md  ← natural conversation flow implementation guide
 ├── scripts/
 │   ├── check_env.py                   ← validates required environment variables
 │   ├── check_token_endpoint.py        ← tests token endpoint, validates JWT response

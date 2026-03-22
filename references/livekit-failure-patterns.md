@@ -303,6 +303,82 @@ curl http://localhost:54321   # if using local Supabase
 
 ---
 
+## Pattern 11 — Agent Stops on Backchanneling ("uh-huh", "okay")
+
+**Symptoms:**
+- Voice session works — agent speaks and responds to user
+- Agent stops speaking awkwardly when user says "uh-huh", "okay", "mm-hmm"
+- Conversation flow feels unnatural — agent interrupts itself frequently
+- User cannot acknowledge long explanations without breaking agent flow
+- `useVoiceAssistant()` state switches from `speaking` to `listening` on brief user acknowledgments
+
+**Root cause:**
+- Default VAD-only interruption treats ALL speech as interruption
+- Agent cannot distinguish backchanneling from true interruptions
+- Adaptive interruption not enabled (Python SDK < 1.5.0 or config missing)
+
+**Diagnosis:**
+```bash
+# Check SDK version
+pip show livekit-agents | grep Version
+# Must be >= 1.5.0 for adaptive interruption support
+```
+
+Check `AgentSession` config in worker code:
+```python
+# Look for this line:
+turn_handling={"interruption": {"mode": "adaptive"}}
+```
+
+**What to look for:**
+- SDK version below 1.5.0 → upgrade required
+- No `turn_handling` parameter in `AgentSession` → defaults to VAD-only
+- `turn_handling` present but mode is `"vad"` → adaptive not enabled
+- Worker logs on startup should show: `Interruption mode: adaptive`
+
+**Fix:**
+
+1. **Upgrade SDK if needed:**
+```bash
+pip install --upgrade livekit-agents
+```
+
+2. **Add adaptive interruption config to AgentSession:**
+```python
+from livekit.agents import AgentSession
+from livekit.plugins import openai, silero
+
+session = AgentSession[UserState](
+    userdata=userdata,
+    stt=openai.STT(model="whisper-1"),
+    llm=openai.LLM(model="gpt-4o-mini"),
+    tts=openai.TTS(voice="alloy"),
+    vad=silero.VAD.load(),
+    turn_handling={
+        "interruption": {"mode": "adaptive"},
+    },
+)
+```
+
+3. **Restart worker process**
+
+4. **Test backchanneling:**
+   - Start session and let agent speak
+   - Say "uh-huh" during agent speech
+   - Expected: agent continues speaking
+   - If agent stops: config not applied or SDK version too old
+
+**Common mistakes:**
+- ❌ Importing non-existent modules: `from livekit import turn_detector` (ImportError)
+- ❌ Using `TurnHandlingOptions` as a class instea of dict
+- ❌ Overcomplicating config with nested `turn_detection` settings
+- ✅ Just use a simple dict: `turn_handling={"interruption": {"mode": "adaptive"}}`
+
+**See also:**
+- [adaptive-interruption-handling.md](adaptive-interruption-handling.md) for complete implementation guide
+
+---
+
 ## Failure Triage Order
 
 If everything appears broken, diagnose in this order:

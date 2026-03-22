@@ -322,6 +322,7 @@ npx skills add visaoenhance/livekit-debug-playground
 
 - [livekit-failure-patterns.md](references/livekit-failure-patterns.md) — common failure modes with diagnosis
 - [evidence-checklist.md](references/evidence-checklist.md) — printable validation checklist
+- [adaptive-interruption-handling.md](references/adaptive-interruption-handling.md) — natural conversation flow with backchanneling vs interruption detection
 - [project-types.md](references/project-types.md) — required vars and layer specifics per project type
 - [scripts/check_env.py](scripts/check_env.py) — env var validation
 - [scripts/check_token_endpoint.py](scripts/check_token_endpoint.py) — token endpoint validation
